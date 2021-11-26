@@ -1,0 +1,17 @@
+.vs/
+bin/
+obj/
+packages/
+*.map
+*.user
+!CorePublished/bin
+!RemoteDynamicServer/bin
+RemoteDynamicServer/bin/*
+!RemoteDynamicServer/bin/key.xml
+
+/.idea
+.sonarqube/
+.config/
+Binaries/
+persistent/
+Nuget.Config
