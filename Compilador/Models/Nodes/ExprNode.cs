@@ -9,11 +9,6 @@ namespace Compilador.Models.Nodes
     {
         public override NodeType Type => NodeType.EXPR;
 
-        public override bool Build(char next)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool First(char next)
         {
             return new ValorNode().First(next) || new TipoNode().First(next);
@@ -21,7 +16,7 @@ namespace Compilador.Models.Nodes
 
         public override bool Follow(string next)
         {
-            return next.EndsWith(";");
+            return next.Contains(";");
         }
 
         public override IEnumerable<Condition> GetNeightbors()

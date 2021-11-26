@@ -1,33 +1,44 @@
 ﻿using Compilador.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Compilador.Models.Nodes
 {
     public class TipoNode : Node
     {
         public override NodeType Type => NodeType.TIPO;
+        /// <summary>
+        /// Matches the beggining of int, float, char, bool
+        /// </summary>
+        private readonly Regex firstTipoRegex = new Regex(@"^[ifcb]*");
+        private readonly Regex tipoRegex = new Regex(@"^int|float|char|bool$");
+        private readonly Regex buildTipoRegex = new Regex(@"^in*t*|fl*o*a*t*|ch*a*r*|bo*o*l*");
 
         public override bool Build(char next)
         {
-            throw new System.NotImplementedException();
+            if(buildTipoRegex.IsMatch(Value + next))
+            {
+                Value += next;
+                return true;
+            }
+
+            return false;
         }
 
         public override bool First(char next)
         {
-            return next == 'i' //int
-                || next == 'f' //float
-                || next == 'c' //char
-                || next == 'b';//bool
+            return firstTipoRegex.IsMatch(next.ToString());
         }
 
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return new IdNode().First(next.FirstOrDefault());
         }
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            throw new System.NotImplementedException();
+            yield break;
         }
 
         public override bool IsTerminal()
@@ -37,7 +48,7 @@ namespace Compilador.Models.Nodes
 
         public override bool Validate(string value = null, List<INode> nodes = null)
         {
-            throw new System.NotImplementedException();
+            return tipoRegex.IsMatch(Value);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Compilador.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Compilador.Models.Nodes
 {
@@ -7,19 +8,14 @@ namespace Compilador.Models.Nodes
     {
         public override NodeType Type => NodeType.EXPRBI;
 
-        public override bool Build(char next)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override bool First(char next)
         {
-            throw new System.NotImplementedException();
+            return new ValorNode().First(next);
         }
 
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return next == ")" || new ExprNode().Follow(next) || new ExprNode().First(next.FirstOrDefault());
         }
 
         public override IEnumerable<Condition> GetNeightbors()
@@ -31,11 +27,6 @@ namespace Compilador.Models.Nodes
         public override bool IsTerminal()
         {
             return false;
-        }
-
-        public override bool Validate(string value = null, List<INode> nodes = null)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

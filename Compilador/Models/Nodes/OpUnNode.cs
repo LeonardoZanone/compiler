@@ -1,31 +1,40 @@
 ﻿
 using Compilador.Interfaces;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Compilador.Models.Nodes
 {
     internal class OpUnNode : Node
     {
         public override NodeType Type => NodeType.OPUN;
+        private readonly Regex opUnRegex = new Regex(@"^(\+\+|\-\-|\!){1}$");
+        private readonly Regex firstOpUnRegex = new Regex(@"^(\+|\-|\!)");
+        private readonly Regex buildOpUnRegex = new Regex(@"^(\+\+*|\-\-*|\!)$");
 
         public override bool Build(char next)
         {
-            throw new System.NotImplementedException();
+            if(buildOpUnRegex.IsMatch(Value + next))
+            {
+                Value += next;
+                return true;
+            }
+            return false;
         }
 
         public override bool First(char next)
         {
-            throw new System.NotImplementedException();
+            return firstOpUnRegex.IsMatch(next.ToString());
         }
 
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return new ExprAttrNode().Follow(next);
         }
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            throw new System.NotImplementedException();
+            yield break;
         }
 
         public override bool IsTerminal()
@@ -35,7 +44,7 @@ namespace Compilador.Models.Nodes
 
         public override bool Validate(string value = null, List<INode> nodes = null)
         {
-            throw new System.NotImplementedException();
+            return opUnRegex.IsMatch(Value);
         }
     }
 }

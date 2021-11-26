@@ -1,15 +1,22 @@
 ﻿using Compilador.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Compilador.Models.Nodes
 {
     public class DigitoNode : Node
     {
         public override NodeType Type => NodeType.DIGITO;
+        private readonly Regex numberRegex = new Regex(@"^\d{1}$");
 
         public override bool Build(char next)
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrEmpty(Value) && IsDigit(next.ToString()))
+            {
+                Value += next;
+            }
+            return false;
         }
 
         public override bool First(char next)
@@ -19,11 +26,7 @@ namespace Compilador.Models.Nodes
 
         public override bool Follow(string next)
         {
-            if(string.IsNullOrEmpty(Value) && IsDigit(next.ToString()))
-            {
-                Value += next;
-            }
-            return false;
+            return new InteiroNode().First(next.FirstOrDefault()) || new InteiroNode().Follow(next);
         }
 
         public override IEnumerable<Condition> GetNeightbors()
@@ -43,21 +46,7 @@ namespace Compilador.Models.Nodes
 
         private bool IsDigit(string value)
         {
-            switch (value)
-            {
-                case "0":
-                case "1":
-                case "2":
-                case "3":
-                case "4":
-                case "5":
-                case "6":
-                case "7":
-                case "8":
-                case "9":
-                    return true;
-                default: return false;
-            }
+            return numberRegex.IsMatch(value);
         }
     }
 }

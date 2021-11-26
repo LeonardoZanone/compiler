@@ -5,25 +5,31 @@ namespace Compilador.Models.Nodes
 {
     public class TerminalNode : Node
     {
+        private readonly string constValue;
         public TerminalNode(string value)
         {
-            Value = value;
+            constValue = value;
         }
         public override NodeType Type => NodeType.TERMINAL;
 
         public override bool Build(char next)
         {
-            throw new System.NotImplementedException();
+            if(constValue.StartsWith(Value + next))
+            {
+                Value += next;
+                return true;
+            }
+            return false;
         }
 
         public override bool First(char next)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return true;
         }
 
         public override IEnumerable<Condition> GetNeightbors()
@@ -34,6 +40,11 @@ namespace Compilador.Models.Nodes
         public override bool IsTerminal()
         {
             return true;
+        }
+
+        public override bool Validate(string value = null, List<INode> nodes = null)
+        {
+            return Value == constValue;
         }
 
     }

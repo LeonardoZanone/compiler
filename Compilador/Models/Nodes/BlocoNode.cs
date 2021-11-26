@@ -44,22 +44,5 @@ namespace Compilador.Models.Nodes
         {
             return new ExprNode().First(next) || new ComandoNode().First(next) || new ComentarioNode().First(next);
         }
-
-        public override bool Build(char next)
-        {
-            //if (string.IsNullOrEmpty(Value) && !First(next))
-            //{
-            //    return false;
-            //}
-
-            //if (Value.StartsWith("{") && next == '}')
-            //{
-            //    return false;
-            //}
-
-            //Value += next;
-            //return true;
-            return false;
-        }
     }
 }

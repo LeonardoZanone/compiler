@@ -1,5 +1,6 @@
 ﻿using Compilador.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Compilador.Models.Nodes
 {
@@ -7,38 +8,28 @@ namespace Compilador.Models.Nodes
     {
         public override NodeType Type => NodeType.EXPRATT;
 
-        public override bool Build(char next)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override bool First(char next)
         {
-            throw new System.NotImplementedException();
+            return new IdNode().First(next) || new TipoNode().First(next);
         }
 
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return new ExprNode().Follow(next) || new ExprNode().First(next.FirstOrDefault());
         }
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new TipoNode(), new TerminalNode("<id>"), new OpAttrNode(), new AtribuicaoNode() });
-            yield return new Condition(new List<INode>() { new TerminalNode("<id>"), new OpAttrNode(), new AtribuicaoNode() });
-            yield return new Condition(new List<INode>() { new TipoNode(), new TerminalNode("<id>") });
-            yield return new Condition(new List<INode>() { new TerminalNode("<id>"), new OpUnNode() });
+            yield return new Condition(new List<INode>() { new TipoNode(), new IdNode(), new OpAttrNode(), new AtribuicaoNode() });
+            yield return new Condition(new List<INode>() { new IdNode(), new OpAttrNode(), new AtribuicaoNode() });
+            yield return new Condition(new List<INode>() { new TipoNode(), new IdNode() });
+            yield return new Condition(new List<INode>() { new IdNode(), new OpUnNode() });
             yield break;
         }
 
         public override bool IsTerminal()
         {
             return false;
-        }
-
-        public override bool Validate(string value = null, List<INode> nodes = null)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Compilador.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode>() { new ExprBiNode() });
-            yield return new Condition(new List<INode>() { new TerminalNode("<id>") });
+            yield return new Condition(new List<INode>() { new IdNode() });
             yield return new Condition(new List<INode>() { new ValorNode() });
             yield break;
         }
@@ -20,23 +20,15 @@ namespace Compilador.Models.Nodes
             return false;
         }
 
-        public override bool Validate(string value = null, List<INode> nodes = null)
-        {
-            throw new System.NotImplementedException();
-        }
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return new ExprNode().Follow(next);
         }
 
         public override bool First(char next)
         {
-            throw new System.NotImplementedException();
+            return new ValorNode().First(next);
         }
 
-        public override bool Build(char next)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

@@ -3,24 +3,24 @@ using System.Collections.Generic;
 
 namespace Compilador.Models.Nodes
 {
-    public class InteiroNode : Node
+    public class ArgsNode : Node
     {
-        public override NodeType Type => NodeType.INTEIRO;
+        public override NodeType Type => NodeType.ARGS;
 
         public override bool First(char next)
         {
-            return new DigitoNode().First(next);
+            return new ArgNode().First(next);
         }
 
         public override bool Follow(string next)
         {
-            return next == "." || new ValorNode().Follow(next);
+            return false;
         }
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new DigitoNode() });
-            yield return new Condition(new List<INode>() { new DigitoNode(), new InteiroNode() });
+            yield return new Condition(new List<INode>() { new ArgNode(), new TerminalNode(","), new ArgNode() });
+            yield return new Condition(new List<INode>() { new ArgNode() });
             yield break;
         }
 

@@ -1,4 +1,5 @@
 ﻿using Compilador.Models;
+using Compilador.Models.Nodes;
 using System.Collections.Generic;
 
 namespace Compilador.Interfaces
@@ -14,5 +15,6 @@ namespace Compilador.Interfaces
         public bool First(char next);
         public bool Follow(string next);
         public List<INode> Validate(string value);
+        public NodeType GetNodeType();
     }
 }

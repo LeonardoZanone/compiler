@@ -100,7 +100,10 @@ namespace Compilador.Models.Nodes
         public abstract bool IsTerminal();
         public abstract bool First(char next);
         public abstract bool Follow(string next);
-        public abstract bool Build(char next);
+        public virtual bool Build(char next)
+        {
+            return IsTerminal();
+        }
 
         public string GetValue()
         {
@@ -110,6 +113,11 @@ namespace Compilador.Models.Nodes
         public List<INode> GetChildren()
         {
             return Children;
+        }
+
+        public NodeType GetNodeType()
+        {
+            return Type;
         }
     }
 

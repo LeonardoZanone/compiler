@@ -7,19 +7,14 @@ namespace Compilador.Models.Nodes
     {
         public override NodeType Type => NodeType.FLOAT;
 
-        public override bool Build(char next)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override bool First(char next)
         {
-            throw new System.NotImplementedException();
+            return new DigitoNode().First(next);
         }
 
         public override bool Follow(string next)
         {
-            throw new System.NotImplementedException();
+            return new ValorNode().Follow(next);
         }
 
         public override IEnumerable<Condition> GetNeightbors()
@@ -31,11 +26,6 @@ namespace Compilador.Models.Nodes
         public override bool IsTerminal()
         {
             return false;
-        }
-
-        public override bool Validate(string value = null, List<INode> nodes = null)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
