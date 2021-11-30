@@ -8,7 +8,7 @@ namespace Compilador.Models.Nodes
     public class DigitoNode : Node
     {
         public override NodeType Type => NodeType.DIGITO;
-        private readonly Regex numberRegex = new Regex(@"^\d{1}$");
+        private static readonly Regex numberRegex = new Regex(@"^\d{1}$");
 
         public override bool Build(char next)
         {

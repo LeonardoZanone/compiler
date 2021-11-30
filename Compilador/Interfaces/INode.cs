@@ -14,7 +14,9 @@ namespace Compilador.Interfaces
         public bool Build(char next);
         public bool First(char next);
         public bool Follow(string next);
-        public List<INode> Validate(string value);
+        public string Validate(string value);
         public NodeType GetNodeType();
+        public bool IsValid();
+        public void AddChild(INode child);
     }
 }

@@ -19,7 +19,11 @@ namespace Compilador.Models.Nodes
 
         public override bool Validate(string value = null, List<INode> nodes = null)
         {
-            if(Value.StartsWith("...") && Value.EndsWith("...")) { return true; }
+            if(Value.StartsWith("...") && Value.EndsWith("...")) 
+            {
+                _isValid = true;
+                return true; 
+            }
 
             return base.Validate();
         }

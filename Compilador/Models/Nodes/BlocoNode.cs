@@ -11,7 +11,7 @@ namespace Compilador.Models.Nodes
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new ExprNode(), new TerminalNode(";"), new BlocoNode() });
+            //yield return new Condition(new List<INode>() { new ExprNode(), new TerminalNode(";"), new BlocoNode() });
             yield return new Condition(new List<INode>() { new ComentarioNode(), new BlocoNode() });
             yield return new Condition(new List<INode>() { new ComandoNode(), new BlocoNode() });
             yield return new Condition(new List<INode>() { new ExprNode(), new TerminalNode(";")});

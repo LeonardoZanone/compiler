@@ -11,9 +11,9 @@ namespace Compilador.Models.Nodes
         /// <summary>
         /// Matches the beggining of int, float, char, bool
         /// </summary>
-        private readonly Regex firstTipoRegex = new Regex(@"^[ifcb]*");
-        private readonly Regex tipoRegex = new Regex(@"^int|float|char|bool$");
-        private readonly Regex buildTipoRegex = new Regex(@"^in*t*|fl*o*a*t*|ch*a*r*|bo*o*l*");
+        private static readonly Regex firstTipoRegex = new Regex(@"^[ifcb]*");
+        private static readonly Regex tipoRegex = new Regex(@"^int|float|char|bool$");
+        private static readonly Regex buildTipoRegex = new Regex(@"^in*t*|fl*o*a*t*|ch*a*r*|bo*o*l*");
 
         public override bool Build(char next)
         {

@@ -21,79 +21,120 @@ namespace Compilador.Models.Nodes
         }
         public virtual bool Validate(string value = null, List<INode> nodes = null)
         {
-            if (IsTerminal())
-            {
-                return true;
-            }
-
-            //foreach (Condition condition in GetNeightbors())
-            //{
-            //    List<INode> nodes2 = condition.Validate(value, nodes);
-            //    if (nodes2?.Count == condition.Count())
-            //    {
-            //        Children.AddRange(nodes2);
-            //    }
-            //}
-
             return false;
         }
 
-        public List<INode> Validate(string value)
+        protected bool _isValid;
+
+        public string Validate(string value)
         {
-            List<INode> result = new List<INode>();
+
             foreach (Condition condition in GetNeightbors())
             {
                 foreach (INode node in condition.Nodes)
                 {
-                    char[] values = value.ToCharArray();
-                    bool added = false;
-
-                    if (!node.Follow(value))
+                    AddChild(node);
+                    if (string.IsNullOrEmpty(value))
                     {
-                        break;
+                        return null;
                     }
+
 
                     if (!node.First(value.FirstOrDefault()))
                     {
                         break;
                     }
 
-                    foreach (char character in values)
-                    {
-                        if (!node.Build(character))
-                        {
-                            break;
-                        }
-                    }
-
-                    if (node.Validate(value, null))
-                    {
-                        result.Add(node);
-                        added = true;
-                        //node.GetChildren().AddRange(result);
-                        value = value.Substring(node.GetValue().Count());
-                    }
-
-                    foreach (var item in node.GetNeightbors())
-                    {
-                        foreach (var item2 in item.Nodes)
-                        {
-                            item2.Validate(value);
-                        }
-                    }
-
-                    if (!added)
+                    if (!node.Follow(value))
                     {
                         break;
                     }
 
-                    if (string.IsNullOrEmpty(node.GetValue()))
+                    if(node.IsTerminal())
                     {
-                        return result;
+                        foreach (char character in value)
+                        {
+                            if (!node.Build(character))
+                            {
+                                break;
+                            }
+                        }
+
+                        if (node.Validate())
+                        {
+                            value = value.Substring(node.GetValue().Count());
+                        }
+                    }
+                    else
+                    {
+                        value = node.Validate(value);
                     }
                 }
             }
-            return result;
+
+            return null;
+
+            //foreach (Condition condition in GetNeightbors())
+            //{
+            //    foreach (INode node in condition.Nodes)
+            //    {
+            //        char[] values = value.ToCharArray();
+            //        bool added = false;
+
+            //        if (!node.Follow(value))
+            //        {
+            //            break;
+            //        }
+
+            //        if (!node.First(value.FirstOrDefault()))
+            //        {
+            //            break;
+            //        }
+
+            //        foreach (char character in values)
+            //        {
+            //            if (!node.Build(character))
+            //            {
+            //                break;
+            //            }
+            //        }
+
+            //        if (node.Validate(value, null))
+            //        {
+            //            return node;
+            //            //result.Add(node);
+            //            //node.GetChildren().Add(node);
+            //            //if (node.IsTerminal())
+            //            //{
+            //            //    return value.Substring(node.GetValue().Count());
+            //            //}
+            //        }
+
+            //        foreach (Condition item in node.GetNeightbors())
+            //        {
+            //            foreach (INode item2 in item.Nodes)
+            //            {
+            //                INode result = item2.Validate(value);
+            //                if (result != null)
+            //                {
+            //                    this.GetChildren().Add(result);
+            //                    value = value.Substring(result.GetValue().Count());
+            //                }
+            //            }
+            //        }
+
+            //        if (!added)
+            //        {
+            //            break;
+            //        }
+
+            //        //if (string.IsNullOrEmpty(node.GetValue()))
+            //        //{
+            //        //    return result;
+            //        //}
+            //    }
+            //}
+            //return null;
         }
 
         public abstract IEnumerable<Condition> GetNeightbors();
@@ -118,6 +159,16 @@ namespace Compilador.Models.Nodes
         public NodeType GetNodeType()
         {
             return Type;
+        }
+
+        public bool IsValid()
+        {
+            return _isValid;
+        }
+
+        public void AddChild(INode child)
+        {
+            Children.Add(child);
         }
     }
 

@@ -8,9 +8,9 @@ namespace Compilador.Models.Nodes
     internal class OpUnNode : Node
     {
         public override NodeType Type => NodeType.OPUN;
-        private readonly Regex opUnRegex = new Regex(@"^(\+\+|\-\-|\!){1}$");
-        private readonly Regex firstOpUnRegex = new Regex(@"^(\+|\-|\!)");
-        private readonly Regex buildOpUnRegex = new Regex(@"^(\+\+*|\-\-*|\!)$");
+        private static readonly Regex opUnRegex = new Regex(@"^(\+\+|\-\-|\!){1}$");
+        private static readonly Regex firstOpUnRegex = new Regex(@"^(\+|\-|\!)");
+        private static readonly Regex buildOpUnRegex = new Regex(@"^(\+\+*|\-\-*|\!)$");
 
         public override bool Build(char next)
         {
