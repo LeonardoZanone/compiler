@@ -27,7 +27,7 @@ namespace Compilador.Models.Nodes
 
         public override bool First(char next)
         {
-            return new ValorNode().First(next);
+            return new IdNode().First(next) || new ExprBiNode().First(next) || new ValorNode().First(next);
         }
 
     }

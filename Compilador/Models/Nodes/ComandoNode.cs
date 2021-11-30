@@ -1,5 +1,4 @@
 ﻿using Compilador.Interfaces;
-using Compilador.Models.Nodes.Comands;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,13 +32,14 @@ namespace Compilador.Models.Nodes
 
         public override bool Follow(string next)
         {
-            return new BlocoNode().Follow(next) || new BlocoNode().First(next.First());
+            return new BlocoNode().Follow(next) || new BlocoNode().First(next.FirstOrDefault());
         }
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new IfComandoNode() });
-            yield return new Condition(new List<INode>() { new IfComandoNode() });
+            yield return new Condition(new List<INode>() { new IfNode(), new TerminalNode("{"), new BlocoNode(), new TerminalNode("}") });
+            yield return new Condition(new List<INode>() { new ForNode(), new TerminalNode("{"), new BlocoNode(), new TerminalNode("}") });
+            yield return new Condition(new List<INode>() { new WhileNode(), new TerminalNode("{"), new BlocoNode(), new TerminalNode("}") });
             yield break;
         }
 
@@ -47,9 +47,14 @@ namespace Compilador.Models.Nodes
         {
             return false;
         }
-        public override bool Validate(string value = null, List<INode> nodes = null)
+        public override bool Validate()
         {
-            return comandoRegex.IsMatch(Value);
+            if(comandoRegex.IsMatch(Value))
+            {
+                _isValid = true;
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Compilador.Models.Nodes
 
         public override bool First(char next)
         {
-            return true;
+            return constValue.StartsWith(next);
         }
 
         public override bool Follow(string next)
@@ -42,9 +42,14 @@ namespace Compilador.Models.Nodes
             return true;
         }
 
-        public override bool Validate(string value = null, List<INode> nodes = null)
+        public override bool Validate()
         {
-            return Value == constValue;
+            if(Value == constValue)
+            {
+                _isValid = true;
+                return true;
+            }
+            return false;
         }
 
     }

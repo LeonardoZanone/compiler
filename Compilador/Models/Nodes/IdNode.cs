@@ -49,9 +49,14 @@ namespace Compilador.Models.Nodes
             return true;
         }
 
-        public override bool Validate(string value = null, List<INode> nodes = null)
+        public override bool Validate()
         {
-            return idRegex.IsMatch(Value);
+            if (idRegex.IsMatch(Value))
+            {
+                _isValid = true;
+                return true;
+            }
+            return false;
         }
     }
 }

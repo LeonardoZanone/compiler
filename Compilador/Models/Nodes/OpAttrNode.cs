@@ -9,8 +9,8 @@ namespace Compilador.Models.Nodes
     {
         public override NodeType Type => NodeType.OPATTR;
         private static readonly Regex opAttrRegex = new Regex(@"^[\+\-\*\/]*={0,1}$");
-        private static readonly Regex firstOpAttrRegex = new Regex(@"^\+|\-|\*|\/");
-        private static readonly Regex buildOpAttrRegex = new Regex(@"^[\+\-\*\/]*={0,1}");
+        private static readonly Regex firstOpAttrRegex = new Regex(@"^\+|\-|\*|\/|\=");
+        private static readonly Regex buildOpAttrRegex = new Regex(@"^[\+\-\*\/]*={0,1}$");
 
         public override bool Build(char next)
         {
@@ -42,9 +42,14 @@ namespace Compilador.Models.Nodes
             return true;
         }
 
-        public override bool Validate(string value = null, List<INode> nodes = null)
+        public override bool Validate()
         {
-            return opAttrRegex.IsMatch(Value);
+            if (opAttrRegex.IsMatch(Value))
+            {
+                _isValid = true;
+                return true;
+            }
+            return false;
         }
     }
 }

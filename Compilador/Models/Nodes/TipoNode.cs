@@ -13,7 +13,7 @@ namespace Compilador.Models.Nodes
         /// </summary>
         private static readonly Regex firstTipoRegex = new Regex(@"^[ifcb]*");
         private static readonly Regex tipoRegex = new Regex(@"^int|float|char|bool$");
-        private static readonly Regex buildTipoRegex = new Regex(@"^in*t*|fl*o*a*t*|ch*a*r*|bo*o*l*");
+        private static readonly Regex buildTipoRegex = new Regex(@"^in*t*(?<=in*t*)$|^fl*o*a*t*(?<=fl*o*a*t*)$|^ch*a*r*(?<=ch*a*r*)$|^bo*o*l*(?<=bo*o*l*)$");
 
         public override bool Build(char next)
         {
@@ -46,9 +46,14 @@ namespace Compilador.Models.Nodes
             return true;
         }
 
-        public override bool Validate(string value = null, List<INode> nodes = null)
+        public override bool Validate()
         {
-            return tipoRegex.IsMatch(Value);
+            if (tipoRegex.IsMatch(Value))
+            {
+                _isValid = true;
+                return true;
+            }
+            return false;
         }
     }
 }

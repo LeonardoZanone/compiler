@@ -19,7 +19,7 @@ namespace Compilador.Models
         {
             Regex whitespaces = new Regex(@"\s");
             content = whitespaces.Replace(content, new MatchEvaluator(match => ""));
-            Root.Validate(content);
+            string reault = Root.Validate(content, new List<NodeType>());
             var nodes = new List<Node>();
         }
 

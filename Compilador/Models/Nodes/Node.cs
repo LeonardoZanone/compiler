@@ -10,7 +10,8 @@ namespace Compilador.Models.Nodes
 
         public virtual string Value { get; set; } = string.Empty;
 
-        public List<INode> Children { get; set; } = new List<INode>();
+        private List<INode> Children { get; set; } = new List<INode>();
+        private INode Parent { get; set; }
 
         public Node()
         {
@@ -19,38 +20,52 @@ namespace Compilador.Models.Nodes
         {
             Value = value;
         }
-        public virtual bool Validate(string value = null, List<INode> nodes = null)
+        public virtual bool Validate()
         {
+            if(!IsTerminal() && GetChildren().Last().IsValid())
+            {
+                IsValid(true);
+                return true;
+            }
             return false;
         }
 
         protected bool _isValid;
 
-        public string Validate(string value)
+        public string Validate(string value, List<NodeType> callStack)
         {
-
             foreach (Condition condition in GetNeightbors())
             {
+                //Children = new List<INode>();
                 foreach (INode node in condition.Nodes)
                 {
-                    AddChild(node);
+                    AddChild(node as Node);
+                    callStack.Add((node as Node).Type);
                     if (string.IsNullOrEmpty(value))
                     {
+                        Parent.IsValid(true);
                         return null;
                     }
 
+                    if(callStack.Count(n => n == Type) > 5)
+                    {
+                        callStack.RemoveAt(callStack.Count - 1);
+                        return value;
+                    }
 
                     if (!node.First(value.FirstOrDefault()))
                     {
+                        callStack.RemoveAt(callStack.Count - 1);
                         break;
                     }
 
-                    if (!node.Follow(value))
-                    {
-                        break;
-                    }
+                    //if (!node.Follow(value))
+                    //{
+                    //    callStack.RemoveAt(callStack.Count - 1);
+                    //    break;
+                    //}
 
-                    if(node.IsTerminal())
+                    if (node.IsTerminal())
                     {
                         foreach (char character in value)
                         {
@@ -63,16 +78,37 @@ namespace Compilador.Models.Nodes
                         if (node.Validate())
                         {
                             value = value.Substring(node.GetValue().Count());
+                            if(condition.Nodes.Last() == node)
+                            {
+                                return value;
+                            }
+                        }
+                        else
+                        {
+                            callStack.RemoveAt(callStack.Count - 1);
+                            break;
                         }
                     }
                     else
                     {
-                        value = node.Validate(value);
+                        string tempValue = node.Validate(value, callStack);
+
+                        if(tempValue != "FAILED PATH")
+                        {
+                            value = tempValue;
+                        }
+
+                        if (condition.Nodes.Last() == node)
+                        {
+                            node.Validate();
+                            return value;
+                        }
                     }
+                    callStack.RemoveAt(callStack.Count - 1);
                 }
             }
 
-            return null;
+            return "FAILED PATH";
 
             //foreach (Condition condition in GetNeightbors())
             //{
@@ -161,14 +197,19 @@ namespace Compilador.Models.Nodes
             return Type;
         }
 
-        public bool IsValid()
+        public bool IsValid(bool isValid = false)
         {
+            if(isValid)
+            {
+                _isValid = true;
+            }
             return _isValid;
         }
 
-        public void AddChild(INode child)
+        public void AddChild(Node child)
         {
             Children.Add(child);
+            child.Parent = this;
         }
     }
 
