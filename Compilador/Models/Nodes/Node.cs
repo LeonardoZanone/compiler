@@ -34,21 +34,26 @@ namespace Compilador.Models.Nodes
 
         public string Validate(string value, List<NodeType> callStack)
         {
+            string backupValue = value;
             foreach (Condition condition in GetNeightbors())
             {
-                //Children = new List<INode>();
+                value = backupValue;
+                Children = new List<INode>();
                 foreach (INode node in condition.Nodes)
                 {
-                    AddChild(node as Node);
-                    callStack.Add((node as Node).Type);
                     if (string.IsNullOrEmpty(value))
                     {
-                        Parent.IsValid(true);
+                        callStack.RemoveAt(callStack.Count - 1);
+                        IsValid(true);
                         return null;
                     }
 
-                    if(callStack.Count(n => n == Type) > 5)
+                    AddChild(node as Node);
+                    callStack.Add((node as Node).Type);
+
+                    if (callStack.Count(n => n == Type) > 20)
                     {
+                        (node as Node).Value = "STACK LIMIT";
                         callStack.RemoveAt(callStack.Count - 1);
                         return value;
                     }
@@ -92,15 +97,21 @@ namespace Compilador.Models.Nodes
                     else
                     {
                         string tempValue = node.Validate(value, callStack);
-
-                        if(tempValue != "FAILED PATH")
+                        
+                        if (tempValue != "FAILED PATH")
                         {
                             value = tempValue;
                         }
 
-                        if (condition.Nodes.Last() == node)
+                        if (string.IsNullOrEmpty(value) && Validate())
                         {
-                            node.Validate();
+                            callStack.RemoveAt(callStack.Count - 1);
+                            (node as Node).Parent.IsValid(true);
+                            return null;
+                        }
+
+                        if (node.Validate() && condition.Nodes.Last() == node)
+                        {
                             return value;
                         }
                     }

@@ -16,7 +16,7 @@ namespace Compilador.Models
         }
 
         public void Analyse(string content)
-        {
+        {   
             Regex whitespaces = new Regex(@"\s");
             content = whitespaces.Replace(content, new MatchEvaluator(match => ""));
             string reault = Root.Validate(content, new List<NodeType>());

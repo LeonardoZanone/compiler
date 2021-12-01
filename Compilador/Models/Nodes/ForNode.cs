@@ -33,7 +33,6 @@ namespace Compilador.Models.Nodes
                 new ExprBiNode(),
                 new TerminalNode(";"),
                 new ExprNode(),
-                new TerminalNode(";"),
                 new TerminalNode(")"),
                 new TerminalNode("{"),
                 new BlocoNode(),

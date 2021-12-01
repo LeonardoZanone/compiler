@@ -14,6 +14,11 @@ namespace Compilador.Models.Nodes
 
         public override bool Build(char next)
         {
+            if(string.IsNullOrEmpty(constValue))
+            {
+                return false;
+            }
+
             if(constValue.StartsWith(Value + next))
             {
                 Value += next;
@@ -24,6 +29,10 @@ namespace Compilador.Models.Nodes
 
         public override bool First(char next)
         {
+            if(string.IsNullOrEmpty(constValue))
+            {
+                return true;
+            }
             return constValue.StartsWith(next);
         }
 
@@ -44,7 +53,7 @@ namespace Compilador.Models.Nodes
 
         public override bool Validate()
         {
-            if(Value == constValue)
+            if(string.IsNullOrEmpty(constValue) || Value == constValue)
             {
                 _isValid = true;
                 return true;

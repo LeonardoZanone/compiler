@@ -17,6 +17,7 @@ namespace Compilador.Models.Nodes
             yield return new Condition(new List<INode>() { new ExprNode(), new TerminalNode(";")});
             yield return new Condition(new List<INode>() { new ComandoNode() });
             yield return new Condition(new List<INode>() { new ComentarioNode() });
+            yield return new Condition(new List<INode>() { new TerminalNode("") });
             yield break;
         }
 

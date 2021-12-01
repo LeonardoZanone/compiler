@@ -9,9 +9,9 @@ namespace Compilador.Models.Nodes
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new ExprBiNode() });
             yield return new Condition(new List<INode>() { new IdNode() });
             yield return new Condition(new List<INode>() { new ValorNode() });
+            yield return new Condition(new List<INode>() { new ExprBiNode() });
             yield break;
         }
 

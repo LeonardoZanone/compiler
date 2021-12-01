@@ -25,11 +25,11 @@ namespace Compilador.Models.Nodes
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new IdNode() });
             yield return new Condition(new List<INode>() { new InteiroNode() });
             yield return new Condition(new List<INode>() { new FloatNode() });
-            yield return new Condition(new List<INode>() { new ExprBiNode() });
             yield return new Condition(new List<INode>() { new TerminalNode("("), new ExprBiNode(), new TerminalNode(")") });
+            yield return new Condition(new List<INode>() { new ExprBiNode() });
+            yield return new Condition(new List<INode>() { new IdNode() });
             yield break;
         }
 
