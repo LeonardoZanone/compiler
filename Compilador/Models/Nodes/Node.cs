@@ -48,10 +48,15 @@ namespace Compilador.Models.Nodes
                         return null;
                     }
 
+                    if(Type == NodeType.BLOCO && IsValid())
+                    {
+                        break;
+                    }
+
                     AddChild(node as Node);
                     callStack.Add((node as Node).Type);
 
-                    if (callStack.Count(n => n == Type) > 20)
+                    if (callStack.Count(n => n == Type) > 15)
                     {
                         (node as Node).Value = "STACK LIMIT";
                         callStack.RemoveAt(callStack.Count - 1);
@@ -85,6 +90,7 @@ namespace Compilador.Models.Nodes
                             value = value.Substring(node.GetValue().Count());
                             if(condition.Nodes.Last() == node)
                             {
+                                callStack.RemoveAt(callStack.Count - 1);
                                 return value;
                             }
                         }
@@ -120,68 +126,6 @@ namespace Compilador.Models.Nodes
             }
 
             return "FAILED PATH";
-
-            //foreach (Condition condition in GetNeightbors())
-            //{
-            //    foreach (INode node in condition.Nodes)
-            //    {
-            //        char[] values = value.ToCharArray();
-            //        bool added = false;
-
-            //        if (!node.Follow(value))
-            //        {
-            //            break;
-            //        }
-
-            //        if (!node.First(value.FirstOrDefault()))
-            //        {
-            //            break;
-            //        }
-
-            //        foreach (char character in values)
-            //        {
-            //            if (!node.Build(character))
-            //            {
-            //                break;
-            //            }
-            //        }
-
-            //        if (node.Validate(value, null))
-            //        {
-            //            return node;
-            //            //result.Add(node);
-            //            //node.GetChildren().Add(node);
-            //            //if (node.IsTerminal())
-            //            //{
-            //            //    return value.Substring(node.GetValue().Count());
-            //            //}
-            //        }
-
-            //        foreach (Condition item in node.GetNeightbors())
-            //        {
-            //            foreach (INode item2 in item.Nodes)
-            //            {
-            //                INode result = item2.Validate(value);
-            //                if (result != null)
-            //                {
-            //                    this.GetChildren().Add(result);
-            //                    value = value.Substring(result.GetValue().Count());
-            //                }
-            //            }
-            //        }
-
-            //        if (!added)
-            //        {
-            //            break;
-            //        }
-
-            //        //if (string.IsNullOrEmpty(node.GetValue()))
-            //        //{
-            //        //    return result;
-            //        //}
-            //    }
-            //}
-            //return null;
         }
 
         public abstract IEnumerable<Condition> GetNeightbors();

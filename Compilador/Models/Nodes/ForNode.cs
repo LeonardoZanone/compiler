@@ -34,9 +34,6 @@ namespace Compilador.Models.Nodes
                 new TerminalNode(";"),
                 new ExprNode(),
                 new TerminalNode(")"),
-                new TerminalNode("{"),
-                new BlocoNode(),
-                new TerminalNode("}")
             });
             yield break;
         }

@@ -1,4 +1,6 @@
-﻿namespace Compilador.Models
+﻿using Compilador.Interfaces;
+
+namespace Compilador.Models
 {
     public class DotCode : Code
     {
@@ -13,9 +15,11 @@
         protected override void Analyse()
         {
             Graph.Analyse(Content);
-            Graph.Translate();
         }
 
-        
+        protected override void TrasnslateTo(ICode code)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

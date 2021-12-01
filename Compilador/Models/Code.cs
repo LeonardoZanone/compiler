@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Compilador.Models
 {
-    public abstract class Code
+    public abstract class Code : ICode
     {
         public string FileName { get; protected set; }
         public string FilePath { get; protected set; }
@@ -24,6 +24,7 @@ namespace Compilador.Models
         protected IGraph Graph { get => _graph; }
 
         protected abstract void Analyse();
+        protected abstract void TrasnslateTo(ICode code);
         protected abstract void SetGraph();
         protected void SetGraph(IGraph graph) => this._graph = graph;
     }

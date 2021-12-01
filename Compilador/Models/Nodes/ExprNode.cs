@@ -22,8 +22,8 @@ namespace Compilador.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode> { new ExprAttrNode() });
-            yield return new Condition(new List<INode> { new ExprAttrNode(), new ExprNode() });
             yield return new Condition(new List<INode> { new ExprBiNode() });
+            yield return new Condition(new List<INode> { new ExprAttrNode(), new ExprNode() });
             yield return new Condition(new List<INode> { new ExprBiNode(), new ExprNode() });
             yield break;
         }
