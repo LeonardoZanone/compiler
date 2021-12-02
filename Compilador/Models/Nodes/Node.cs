@@ -12,6 +12,7 @@ namespace Compilador.Models.Nodes
 
         private List<INode> Children { get; set; } = new List<INode>();
         private INode Parent { get; set; }
+        public int LastIndex { get; set; } //TODO
 
         public Node()
         {
@@ -54,13 +55,14 @@ namespace Compilador.Models.Nodes
                     }
 
                     AddChild(node as Node);
+
                     callStack.Add((node as Node).Type);
 
-                    if (callStack.Count(n => n == Type) > 15)
+                    if (callStack.Count(n => n == Type) > 1000)
                     {
                         (node as Node).Value = "STACK LIMIT";
                         callStack.RemoveAt(callStack.Count - 1);
-                        return value;
+                        return "STACK LIMIT";
                     }
 
                     if (!node.First(value.FirstOrDefault()))
@@ -88,7 +90,7 @@ namespace Compilador.Models.Nodes
                         if (node.Validate())
                         {
                             value = value.Substring(node.GetValue().Count());
-                            if(condition.Nodes.Last() == node)
+                            if (condition.Nodes.Last() == node)
                             {
                                 callStack.RemoveAt(callStack.Count - 1);
                                 return value;
@@ -102,11 +104,12 @@ namespace Compilador.Models.Nodes
                     }
                     else
                     {
-                        string tempValue = node.Validate(value, callStack);
-                        
-                        if (tempValue != "FAILED PATH")
+                        value = node.Validate(value, callStack);
+
+                        if (value == "FAILED PATH" || value == "STACK LIMIT")
                         {
-                            value = tempValue;
+                            value = backupValue;
+                            break;
                         }
 
                         if (string.IsNullOrEmpty(value) && Validate())
@@ -165,6 +168,20 @@ namespace Compilador.Models.Nodes
         {
             Children.Add(child);
             child.Parent = this;
+        }
+
+        public override string ToString()
+        {
+            string text = string.Empty;
+            if(GetChildren().Count == 0)
+            {
+                return "\n" + Value;
+            }
+            foreach (Node node in GetChildren())
+            {
+                text += node.ToString();
+            }
+            return text;
         }
     }
 

@@ -10,7 +10,7 @@ namespace Compilador.Models.Nodes
         public override NodeType Type => NodeType.OPBI;
         private static readonly Regex opBiRegex = new Regex(@"^[\!\=\<\>]*={0,1}$|^[\+\-\/\<\>\%]$|^[&|]{2}$");
         private static readonly Regex firstOpBiRegex = new Regex(@"^\!|\=|\+|\-|\/|\<|\>|\%|\&|\|");
-        private static readonly Regex buildOpBiRegex = new Regex(@"^[\!\=\<\>]*={0,1}$|^[\+\-\/\<\>\%]$|^[&|]{2}");
+        private static readonly Regex buildOpBiRegex = new Regex(@"^[\!\=\<\>]*={0,1}$|^[\+\-\/\<\>\%]$|^[&|]{1,2}$");
 
         public override bool Build(char next)
         {

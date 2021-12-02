@@ -10,7 +10,7 @@ namespace Compilador.Models.Nodes
 
         public override bool First(char next)
         {
-            return new ValorNode().First(next);
+            return next == '(' || new ValorNode().First(next);
         }
 
         public override bool Follow(string next)

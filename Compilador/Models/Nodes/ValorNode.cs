@@ -11,7 +11,7 @@ namespace Compilador.Models.Nodes
 
         public override bool First(char next)
         {
-            return new DigitoNode().First(next) || new IdNode().First(next);
+            return next == '(' || new DigitoNode().First(next) || new IdNode().First(next);
         }
 
         public override bool Follow(string next)
@@ -25,9 +25,9 @@ namespace Compilador.Models.Nodes
 
         public override IEnumerable<Condition> GetNeightbors()
         {
+            yield return new Condition(new List<INode>() { new TerminalNode("("), new ExprBiNode(), new TerminalNode(")") });
             yield return new Condition(new List<INode>() { new InteiroNode() });
             yield return new Condition(new List<INode>() { new FloatNode() });
-            yield return new Condition(new List<INode>() { new TerminalNode("("), new ExprBiNode(), new TerminalNode(")") });
             yield return new Condition(new List<INode>() { new IdNode() });
             yield return new Condition(new List<INode>() { new ExprBiNode() });
             yield break;
