@@ -2,6 +2,7 @@
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
 using DotLanguage.Models.Nodes;
+using System;
 using System.Collections.Generic;
 
 namespace DotLanguage.Models
@@ -53,9 +54,9 @@ namespace DotLanguage.Models
         {
             Graph.Analyse(Content);
         }
-        public override ICode TranslateTo<TCode>()
+        public override string TranslateTo<TCode>()
         {
-            string a = string.Empty;
+            string code = string.Empty;
             if (Graph?.IsAnalysed() ?? false)
             {
                 foreach (INode node in Graph.Traversal())
@@ -63,11 +64,14 @@ namespace DotLanguage.Models
                     if(node.IsTerminal())
                     {
                         INode convertedNode = node.TranslateNodeTo<TCode>();
-                        a += convertedNode.ToString();
+                        if (!string.IsNullOrEmpty(convertedNode.ToString()))
+                        {
+                            code += convertedNode.ToString().Trim() + Environment.NewLine;
+                        }
                     }
                 }
             }
-            return null;
+            return code;
         }
 
         public override INode GetNode(NodeType type)

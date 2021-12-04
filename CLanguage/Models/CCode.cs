@@ -57,21 +57,21 @@ namespace CompiladorAPI.Models
             return CNodes[type];
         }
 
-        public override ICode TranslateTo<ICodeType>()
+        public override string TranslateTo<TCode>()
         {
-            string a = string.Empty;
+            string code = string.Empty;
             if (Graph?.IsAnalysed() ?? false)
             {
                 foreach (INode node in Graph.Traversal())
                 {
                     if (node.IsTerminal())
                     {
-                        INode convertedNode = node.TranslateNodeTo<CCode>();
-                        a += convertedNode.ToString();
+                        INode convertedNode = node.TranslateNodeTo<TCode>();
+                        code += convertedNode.ToString();
                     }
                 }
             }
-            return null;
+            return code;
         }
     }
 }

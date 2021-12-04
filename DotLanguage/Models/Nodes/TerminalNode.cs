@@ -63,5 +63,9 @@ namespace DotLanguage.Models.Nodes
             return false;
         }
 
+        public override string ToString()
+        {
+            return constValue;
+        }
     }
 }

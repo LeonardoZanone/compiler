@@ -187,7 +187,6 @@ namespace CompiladorAPI.Models.Nodes
 
         public INode TranslateNodeTo<TCode>() where TCode : ICode
         {
-            
             if (!Codes.ContainsKey(typeof(TCode)))
             {
                 Codes.Add(typeof(TCode), (ICode)Activator.CreateInstance(typeof(TCode)));

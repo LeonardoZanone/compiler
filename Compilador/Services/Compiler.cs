@@ -8,10 +8,9 @@ namespace Compilador.Services
     {
         public static void Convert(string filePath, string outputPath)
         {
-            //DotCode dotCode = new DotCode(Path.GetFileName(filePath), filePath, ReadCode(filePath));
             DotCode dotCode = new DotCode(Path.GetFileName(filePath), filePath, ReadCode(filePath));
-            CCode cCode = (CCode)dotCode.TranslateTo<CCode>();
-            string code = dotCode.ToString();
+            string cCode = dotCode.TranslateTo<CCode>();
+            var a = 10;
         }
         private static string ReadCode(string filePath)
         {

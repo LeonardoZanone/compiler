@@ -30,7 +30,7 @@ namespace CompiladorAPI.Models
             _graph = graph;
         }
 
-        public abstract ICode TranslateTo<TCode>() where TCode : ICode;
+        public abstract string TranslateTo<TCode>() where TCode : ICode;
 
         public abstract INode GetNode(NodeType type);
     }

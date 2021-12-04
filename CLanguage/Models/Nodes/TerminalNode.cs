@@ -1,4 +1,5 @@
-﻿using CompiladorAPI.Models;
+﻿using CompiladorAPI.Interfaces;
+using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
 using System.Collections.Generic;
 
@@ -63,5 +64,9 @@ namespace CLanguage.Models.Nodes
             return false;
         }
 
+        public override string ToString()
+        {
+            return constValue;
+        }
     }
 }
