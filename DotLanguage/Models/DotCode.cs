@@ -16,6 +16,16 @@ namespace DotLanguage.Models
 
         public DotCode(string fileName, string filePath, string content) : base(fileName, filePath, content)
         {
+            Initiaze();
+        }
+
+        public DotCode()
+        {
+            Initiaze();
+        }
+
+        private void Initiaze()
+        {
             DotNodes.Add(NodeType.ARG, new ArgNode());
             DotNodes.Add(NodeType.ARGS, new ArgsNode());
             DotNodes.Add(NodeType.ATRIBUICAO, new AtribuicaoNode());
@@ -52,10 +62,6 @@ namespace DotLanguage.Models
             DotNodes.Add(NodeType.TIPO, new TipoNode());
             DotNodes.Add(NodeType.VALOR, new ValorNode());
             DotNodes.Add(NodeType.WHILE, new WhileNode());
-        }
-
-        public DotCode()
-        {
         }
 
         protected override void SetGraph()

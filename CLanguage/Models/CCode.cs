@@ -14,6 +14,15 @@ namespace CompiladorAPI.Models
         public static readonly Dictionary<NodeType, INode> CNodes = new Dictionary<NodeType, INode>();
         public CCode()
         {
+            Initialize();
+        }
+        public CCode(string fileName, string filePath, string content) : base(fileName, filePath, content)
+        {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             CNodes.Add(NodeType.ARG, new ArgNode());
             CNodes.Add(NodeType.ARGS, new ArgsNode());
             CNodes.Add(NodeType.ATRIBUICAO, new AtribuicaoNode());
@@ -50,10 +59,6 @@ namespace CompiladorAPI.Models
             CNodes.Add(NodeType.TIPO, new TipoNode());
             CNodes.Add(NodeType.VALOR, new ValorNode());
             CNodes.Add(NodeType.WHILE, new WhileNode());
-        }
-        public CCode(string fileName, string filePath, string content) : base(fileName, filePath, content)
-        {
-            
         }
         protected override void SetGraph()
         {

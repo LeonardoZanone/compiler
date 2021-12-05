@@ -2,6 +2,7 @@
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CLanguage.Models.Nodes
 {
@@ -19,7 +20,15 @@ namespace CLanguage.Models.Nodes
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new BlocoNode() });
+            yield return new Condition(new List<INode>() {
+                new TerminalNode("void"),
+                new TerminalNode("main"),
+                new TerminalNode("("),
+                new TerminalNode(")"),
+                new TerminalNode("{"),
+                new BlocoNode(),
+                new TerminalNode("}")
+            });
             yield break;
         }
 
@@ -41,6 +50,16 @@ namespace CLanguage.Models.Nodes
         public override bool Build(char next)
         {
             return false;
+        }
+
+        public override string ToString()
+        {
+            return "void main() {\n";
+        }
+
+        public override string GetCleanValue()
+        {
+            return string.Empty;
         }
     }
 }

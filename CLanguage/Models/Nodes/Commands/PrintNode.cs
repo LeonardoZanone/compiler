@@ -55,15 +55,5 @@ namespace CLanguage.Models.Nodes.Commands
         {
             return $"printf(\"%i\", {GetChildren()[2]});";
         }
-
-        public override INode From(INode node)
-        {
-            PrintNode clonedNode = new PrintNode();
-            foreach (INode child in node.GetChildren())
-            {
-                clonedNode.AddChild((Node)child);
-            }
-            return clonedNode;
-        }
     }
 }

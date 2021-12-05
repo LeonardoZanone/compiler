@@ -8,9 +8,7 @@ namespace CLanguage.Models.Nodes
 {
     public class ComentarioNode : Node
     {
-        private static readonly Regex firstComentarioRegex = new Regex(@"^[\/\**]*");
-        private static readonly Regex buildComentarioRegex = new Regex(@"^\/\*(.*)(\*\/){0,1}");
-        private static readonly Regex comentarioRegex = new Regex(@"^\/\*(.*)\*\/$");
+        private static readonly Regex firstRegex = new Regex(@"^[\/\**]*");
         public ComentarioNode()
         {
         }
@@ -33,7 +31,7 @@ namespace CLanguage.Models.Nodes
 
         public override bool Validate()
         {
-            if (comentarioRegex.IsMatch(Value))
+            if (Value.StartsWith("/*") && Value.EndsWith("*/"))
             {
                 _isValid = true;
                 return true;
@@ -43,7 +41,7 @@ namespace CLanguage.Models.Nodes
 
         public override bool First(char next)
         {
-            return firstComentarioRegex.IsMatch(next.ToString());
+            return firstRegex.IsMatch(next.ToString());
         }
 
         public override bool Follow(string next)
@@ -53,17 +51,29 @@ namespace CLanguage.Models.Nodes
 
         public override bool Build(char next)
         {
-            if (buildComentarioRegex.IsMatch(Value + next))
+            if(string.IsNullOrEmpty(Value) && next != '/')
+            {
+                return false;
+            }
+
+            if(Value.EndsWith("*") && next == '/')
             {
                 Value += next;
-                return true;
+                return false;
             }
-            return false;
+
+            Value += next;
+            return true;
         }
 
         public override INode From(INode node)
         {
             return new ComentarioNode("/*" + node.GetCleanValue() + "*/");
+        }
+
+        public override string GetCleanValue()
+        {
+            return Value.TrimStart("/*".ToCharArray()).TrimEnd("*/".ToCharArray());
         }
     }
 }

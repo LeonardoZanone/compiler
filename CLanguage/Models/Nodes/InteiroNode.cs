@@ -29,8 +29,8 @@ namespace CLanguage.Models.Nodes
 
         public override IEnumerable<Condition> GetNeightbors()
         {
-            yield return new Condition(new List<INode>() { new DigitoNode() });
             yield return new Condition(new List<INode>() { new DigitoNode(), new InteiroNode() });
+            yield return new Condition(new List<INode>() { new DigitoNode() });
             yield break;
         }
 

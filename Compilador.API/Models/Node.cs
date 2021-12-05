@@ -1,6 +1,5 @@
 ﻿using Compilador.API.Models;
 using CompiladorAPI.Interfaces;
-using jdk.nashorn.@internal.ir;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,7 +75,6 @@ namespace CompiladorAPI.Models.Nodes
                         callStack.RemoveAt(callStack.Count - 1);
                         break;
                     }
-
 
                     //if (!node.Follow(value))
                     //{
@@ -214,7 +212,12 @@ namespace CompiladorAPI.Models.Nodes
 
         public virtual INode From(INode node)
         {
-            return (INode)Activator.CreateInstance(GetType(), node.GetCleanValue());
+            INode clonedNode = (INode)Activator.CreateInstance(GetType(), node.GetCleanValue());
+            foreach (INode child in node.GetChildren())
+            {
+                clonedNode.AddChild((Node)child);
+            }
+            return clonedNode;
         }
 
         public virtual string GetCleanValue()

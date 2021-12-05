@@ -13,9 +13,9 @@ namespace Compilador
             string outputPath = string.Empty;
 
 #if DEBUG
-            filePath = Path.Combine(Environment.CurrentDirectory, "primos.dotdot");
-            outputPath = Environment.CurrentDirectory;
-            Compiler.Convert(filePath, outputPath);
+            filePath = Path.Combine(Environment.CurrentDirectory, "primos.c");
+            outputPath = Environment.CurrentDirectory + "/primos.dotdot";
+            Console.WriteLine(Compiler.Convert(filePath, outputPath));
 #else
             if(!CheckArgs(args, ref filePath, ref outputPath))
             {
@@ -27,7 +27,7 @@ namespace Compilador
                 return -1;
             }
 
-            Compiler.Convert(filePath, outputPath);
+            Console.WriteLine(Compiler.Convert(filePath, outputPath));
 #endif
             return 0;
         }
@@ -40,12 +40,12 @@ namespace Compilador
                 return false;
             }
 
-            if (!VerifyAndGetArgument(args, "--path", ref filePath))
+            if (!VerifyAndGetArgument(args, new string[] { "--filePath", "-f" }, ref filePath))
             {
                 return false;
             }
 
-            if (!VerifyAndGetArgument(args, "--outPath", ref outputPath))
+            if (!VerifyAndGetArgument(args, new string[] { "--outPath", "-o" }, ref outputPath))
             {
                 return false;
             }
@@ -67,7 +67,7 @@ namespace Compilador
                 return false;
             }
 
-            if (Path.GetExtension(filePath) == ".dotdot")
+            if (Path.GetExtension(filePath) != ".dotdot" && Path.GetExtension(filePath) != ".c")
             {
                 Console.WriteLine($"File is using the wrong extension. Expecting .dotdot extension");
                 return false;
@@ -76,23 +76,22 @@ namespace Compilador
             return true;
         }
 
-        private static bool VerifyAndGetArgument(string[] args, string argument, ref string argumentValue)
+        private static bool VerifyAndGetArgument(string[] args, string[] argument, ref string argumentValue)
         {
-            if (!args.Contains(argument))
+            if (!args.Any(a => argument.Contains(a)))
             {
-                Console.WriteLine($"Missing paremeters: {argument}");
+                Console.WriteLine($"Missing paremeters: {argument.First()}");
                 return false;
             }
 
-            (string Argument, int Index) path = args.Select((s, i) => (s, i)).FirstOrDefault(t => t.s == argument);
+            (string Argument, int Index) path = args.Select((s, i) => (s, i)).FirstOrDefault(t => argument.Contains(t.s));
             if (path.Index + 1 >= args.Length)
             {
-                Console.WriteLine($"Missing paremeters: {argument}");
+                Console.WriteLine($"Missing paremeters: {argument.First()}");
                 return false;
             }
 
             argumentValue = args[path.Index + 1];
-            Console.WriteLine($"Using: {argument}: {argumentValue}");
             return true;
         }
     }

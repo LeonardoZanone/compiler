@@ -43,5 +43,25 @@ namespace DotLanguage.Models.Nodes
         {
             return false;
         }
+
+        public override bool IsSimpleTranslation()
+        {
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return string.Empty;
+        }
+
+        public override string GetCleanValue()
+        {
+            return string.Empty;
+        }
+
+        public override INode From(INode node)
+        {
+            return new SNode();
+        }
     }
 }

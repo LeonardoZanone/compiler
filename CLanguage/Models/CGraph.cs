@@ -19,24 +19,11 @@ namespace CompiladorAPI.Models
 
         public void Analyse(string content)
         {
-            Regex whitespaces = new Regex(@"\s");
-            content = whitespaces.Replace(content, new MatchEvaluator(match => ""));
             string result = Root.Validate(content, new List<NodeType>());
-            if (result == null)
+            if (string.IsNullOrEmpty(result))
             {
                 _isAnalysed = true;
             }
-            Translate();
-        }
-
-        public ICode Translate()
-        {
-            using (StreamWriter sw = new StreamWriter("result.txt"))
-            {
-                string result = Root.ToString();
-                sw.Write(result);
-            }
-            return null;
         }
 
         public bool IsAnalysed()
@@ -46,6 +33,7 @@ namespace CompiladorAPI.Models
 
         public IEnumerable<INode> Traversal()
         {
+            yield return Root;
             foreach (INode node in TraversalLoop(Root))
             {
                 yield return node;
@@ -57,9 +45,10 @@ namespace CompiladorAPI.Models
         {
             foreach (INode child in node.GetChildren())
             {
-                if (!child.IsSimpleTranslation())
+                if (!child.IsSimpleTranslation() && !(node is SNode && child is TerminalNode))
                 {
                     yield return child;
+                    yield break;
                 }
                 foreach (INode item in TraversalLoop(child))
                 {
