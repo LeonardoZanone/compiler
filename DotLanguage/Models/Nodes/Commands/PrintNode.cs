@@ -55,7 +55,7 @@ namespace DotLanguage.Models.Nodes.Commands
         }
         public override string ToString()
         {
-            return $"aPrint(GetChildren);";
+            return $"aPrinter({GetChildren()[2].GetChildren()[3]});";
         }
 
         public override INode From(INode node)

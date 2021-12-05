@@ -46,7 +46,7 @@ namespace CompiladorAPI.Models
         {
             foreach (INode child in node.GetChildren())
             {
-                if (!child.IsSimpleTranslation() && !(node is SNode && child is TerminalNode))
+                if (!child.IsSimpleTranslation())
                 {
                     yield return child;
                     yield break;

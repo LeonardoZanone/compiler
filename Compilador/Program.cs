@@ -13,8 +13,8 @@ namespace Compilador
             string outputPath = string.Empty;
 
 #if DEBUG
-            filePath = Path.Combine(Environment.CurrentDirectory, "primos.c");
-            outputPath = Environment.CurrentDirectory + "/primos.dotdot";
+            filePath = Path.Combine(Environment.CurrentDirectory, "primos.dotdot");
+            outputPath = Environment.CurrentDirectory + "/primos.c";
             Console.WriteLine(Compiler.Convert(filePath, outputPath));
 #else
             if(!CheckArgs(args, ref filePath, ref outputPath))

@@ -55,5 +55,10 @@ namespace CLanguage.Models.Nodes.Commands
         {
             return $"printf(\"%i\", {GetChildren()[2]});";
         }
+
+        public override string GetCleanValue()
+        {
+            return GetChildren()[2].ToString();
+        }
     }
 }

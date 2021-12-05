@@ -32,7 +32,7 @@ namespace Compilador.Services
                         string cCodeString = dotCode.TranslateTo<CCode>();
                         if (!string.IsNullOrEmpty(cCodeString))
                         {
-                            WriteCode(fullOutPath, cCodeString + "return 0;\n}");
+                            WriteCode(fullOutPath, cCodeString + "\nreturn 0;\n}");
                         }
                         else
                         {

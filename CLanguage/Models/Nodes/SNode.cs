@@ -27,6 +27,9 @@ namespace CLanguage.Models.Nodes
                 new TerminalNode(")"),
                 new TerminalNode("{"),
                 new BlocoNode(),
+                new TerminalNode("return"),
+                new DigitoNode(),
+                new TerminalNode(";"),
                 new TerminalNode("}")
             });
             yield break;
@@ -48,6 +51,11 @@ namespace CLanguage.Models.Nodes
         }
 
         public override bool Build(char next)
+        {
+            return false;
+        }
+
+        public override bool IsSimpleTranslation()
         {
             return false;
         }
