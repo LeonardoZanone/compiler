@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CLanguage.Models.Nodes
+namespace CLanguage.Models.Nodes.Commands
 {
     public class ComandoNode : Node
     {
@@ -14,8 +14,6 @@ namespace CLanguage.Models.Nodes
         /// Matches the beggining of if, for, while, do, print
         /// </summary>
         private static readonly Regex firstComandoRegex = new Regex(@"^[ifwdp]*");
-        private static readonly Regex comandoRegex = new Regex(@"^if|for|while|do|print$");
-        private static readonly Regex buildComandoRegex = new Regex(@"^if*|fo*r*|wh*i*l*e*|do*|pr*i*n*t*");
 
         public ComandoNode()
         {
@@ -23,16 +21,6 @@ namespace CLanguage.Models.Nodes
 
         public ComandoNode(string value) : base(value)
         {
-        }
-
-        public override bool Build(char next)
-        {
-            if (buildComandoRegex.IsMatch(Value + next))
-            {
-                Value += next;
-                return true;
-            }
-            return false;
         }
 
         public override bool First(char next)
@@ -56,15 +44,6 @@ namespace CLanguage.Models.Nodes
 
         public override bool IsTerminal()
         {
-            return false;
-        }
-        public override bool Validate()
-        {
-            if (comandoRegex.IsMatch(Value))
-            {
-                _isValid = true;
-                return true;
-            }
             return false;
         }
     }

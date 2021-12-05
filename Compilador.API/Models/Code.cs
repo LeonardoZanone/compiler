@@ -30,8 +30,23 @@ namespace CompiladorAPI.Models
             _graph = graph;
         }
 
-        public abstract string TranslateTo<TCode>() where TCode : ICode;
-
         public abstract INode GetNode(NodeType type);
+
+        public string TranslateTo<TCode>() where TCode : ICode
+        {
+            string code = string.Empty;
+            if (Graph?.IsAnalysed() ?? false)
+            {
+                foreach (INode node in Graph.Traversal())
+                {
+                    INode convertedNode = node.TranslateNodeTo<TCode>();
+                    if (node.IsTerminal() || !convertedNode.IsSimpleTranslation())
+                    {
+                        code += convertedNode.ToString();
+                    }
+                }
+            }
+            return code;
+        }
     }
 }

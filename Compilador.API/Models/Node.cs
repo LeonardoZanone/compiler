@@ -24,7 +24,7 @@ namespace CompiladorAPI.Models.Nodes
         }
         public virtual bool Validate()
         {
-            if(!IsTerminal() && GetChildren().Last().IsValid())
+            if (!IsTerminal() && GetChildren().Last().IsValid())
             {
                 IsValid(true);
                 return true;
@@ -50,7 +50,7 @@ namespace CompiladorAPI.Models.Nodes
                         return null;
                     }
 
-                    if(Type == NodeType.BLOCO && IsValid())
+                    if (Type == NodeType.BLOCO && IsValid())
                     {
                         break;
                     }
@@ -158,7 +158,7 @@ namespace CompiladorAPI.Models.Nodes
 
         public bool IsValid(bool isValid = false)
         {
-            if(isValid)
+            if (isValid)
             {
                 _isValid = true;
             }
@@ -174,13 +174,13 @@ namespace CompiladorAPI.Models.Nodes
         public override string ToString()
         {
             string text = string.Empty;
-            if(GetChildren().Count == 0)
+            if (IsTerminal())
             {
-                return "\n" + Value;
+                return Value;
             }
-            foreach (Node node in GetChildren())
+            foreach (INode child in GetChildren())
             {
-                text += node.ToString();
+                text += child.ToString();
             }
             return text;
         }
@@ -197,43 +197,57 @@ namespace CompiladorAPI.Models.Nodes
 
         public virtual INode From(INode node)
         {
-            return (INode)Activator.CreateInstance(this.GetType(), node.GetCleanValue());
+            return (INode)Activator.CreateInstance(GetType(), node.GetCleanValue());
         }
 
         public virtual string GetCleanValue()
         {
             return Value;
         }
+
+        public virtual bool IsSimpleTranslation()
+        {
+            return true;
+        }
     }
 
     public enum NodeType
     {
         S = 0,
-        BLOCO = 1,
-        EXPR = 2,
-        EXPRATT = 3,
-        ATRIBUICAO = 4,
-        EXPRBI = 5,
-        VALOR = 6,
-        FLOAT = 7,
-        INTEIRO = 8,
-        DIGITO = 9,
-        TIPO = 10,
-        COMANDO = 11,
-        IF = 12,
-        ELSE = 13,
-        ELSEIF = 14,
-        FOR = 15,
-        WHILE = 16,
-        DO = 17,
-        PRINT = 18,
-        ARGS = 19,
-        ARG = 20,
-        OPUN = 21,
-        OPBI = 22,
-        OPATTR = 23,
-        TERMINAL = 24,
-        COMENTARIO = 25,
-        ID = 26
+        BLOCO,
+        EXPR,
+        EXPRATT,
+        ATRIBUICAO,
+        EXPRBI,
+        VALOR,
+        FLOAT,
+        INTEIRO,
+        DIGITO,
+        TIPO,
+        COMANDO,
+        IF,
+        ELSE,
+        ELSEIF,
+        FOR,
+        WHILE,
+        DO,
+        PRINT,
+        ARGS,
+        ARG,
+        OPUN,
+        OPBI,
+        OPATTR,
+        TERMINAL,
+        COMENTARIO,
+        ID,
+        TERMINALIF,
+        TERMINALFOR,
+        TERMINALDO,
+        TERMINALPRINT,
+        TERMINALWHILE,
+        INTTYPE,
+        FLOATTYPE,
+        CHARTYPE,
+        BOOLTYPE
     }
 }

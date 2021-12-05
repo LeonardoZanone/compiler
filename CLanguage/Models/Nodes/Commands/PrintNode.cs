@@ -1,13 +1,12 @@
-﻿using CompiladorAPI.Interfaces;
+﻿using CLanguage.Models.Nodes.Commands.Terminal;
+using CompiladorAPI.Interfaces;
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DotLanguage.Models.Nodes
+namespace CLanguage.Models.Nodes.Commands
 {
     public class PrintNode : Node
     {
@@ -35,9 +34,9 @@ namespace DotLanguage.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode>() {
-                new TerminalNode("print"),
+                new TerminalPrintNode(),
                 new TerminalNode("("),
-                new ArgNode(),
+                new ArgsNode(),
                 new TerminalNode(")"),
             });
             yield break;
@@ -46,6 +45,25 @@ namespace DotLanguage.Models.Nodes
         public override bool IsTerminal()
         {
             return false;
+        }
+
+        public override bool IsSimpleTranslation()
+        {
+            return false;
+        }
+        public override string ToString()
+        {
+            return $"printf(\"%i\", {GetChildren()[2]});";
+        }
+
+        public override INode From(INode node)
+        {
+            PrintNode clonedNode = new PrintNode();
+            foreach (INode child in node.GetChildren())
+            {
+                clonedNode.AddChild((Node)child);
+            }
+            return clonedNode;
         }
     }
 }

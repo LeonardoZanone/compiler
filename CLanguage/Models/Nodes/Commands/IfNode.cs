@@ -1,25 +1,24 @@
-﻿using CompiladorAPI.Interfaces;
+﻿using CLanguage.Models.Nodes.Commands.Terminal;
+using CompiladorAPI.Interfaces;
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DotLanguage.Models.Nodes
+namespace CLanguage.Models.Nodes.Commands
 {
-    public class ForNode : Node
+    public class IfNode : Node
     {
-        public override NodeType Type => NodeType.FOR;
+        public override NodeType Type => NodeType.IF;
 
-        private static readonly Regex firstComandoRegex = new Regex(@"^[f]*");
+        private static readonly Regex firstComandoRegex = new Regex(@"^[i]*");
 
-        public ForNode()
+        public IfNode()
         {
         }
 
-        public ForNode(string value) : base(value)
+        public IfNode(string value) : base(value)
         {
         }
 
@@ -36,13 +35,9 @@ namespace DotLanguage.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode>() {
-                new TerminalNode("for"),
+                new TerminalIfNode(),
                 new TerminalNode("("),
-                new ExprAttrNode(),
-                new TerminalNode(";"),
                 new ExprBiNode(),
-                new TerminalNode(";"),
-                new ExprNode(),
                 new TerminalNode(")"),
             });
             yield break;

@@ -1,23 +1,23 @@
 ﻿using CompiladorAPI.Interfaces;
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
+using DotLanguage.Models.Nodes.Commands.Terminal;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CLanguage.Models.Nodes
+namespace DotLanguage.Models.Nodes.Commands
 {
-    public class IfNode : Node
+    public class WhileNode : Node
     {
-        public override NodeType Type => NodeType.IF;
+        public override NodeType Type => NodeType.WHILE;
+        private static readonly Regex firstComandoRegex = new Regex(@"^[W]*");
 
-        private static readonly Regex firstComandoRegex = new Regex(@"^[i]*");
-
-        public IfNode()
+        public WhileNode()
         {
         }
 
-        public IfNode(string value) : base(value)
+        public WhileNode(string value) : base(value)
         {
         }
 
@@ -34,7 +34,17 @@ namespace CLanguage.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode>() {
-                new TerminalNode("if"),
+                new TerminalDoNode(),
+                new TerminalNode("{"),
+                new BlocoNode(),
+                new TerminalNode("}"),
+                new TerminalWhileNode(),
+                new TerminalNode("("),
+                new ExprBiNode(),
+                new TerminalNode(")"),
+            });
+            yield return new Condition(new List<INode>() {
+                new TerminalWhileNode(),
                 new TerminalNode("("),
                 new ExprBiNode(),
                 new TerminalNode(")"),

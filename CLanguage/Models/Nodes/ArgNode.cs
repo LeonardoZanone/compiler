@@ -20,7 +20,7 @@ namespace CLanguage.Models.Nodes
 
         public override bool First(char next)
         {
-            return new IdNode().First(next) || new ValorNode().First(next);
+            return next == '"' || new IdNode().First(next) || new ValorNode().First(next);
         }
 
         public override bool Follow(string next)
@@ -37,6 +37,7 @@ namespace CLanguage.Models.Nodes
             yield return new Condition(new List<INode>() { new IdNode() });
             yield return new Condition(new List<INode>() { new ExprBiNode() });
             yield return new Condition(new List<INode>() { new ValorNode() });
+            yield return new Condition(new List<INode>() { new TerminalNode("\"%i\"") });
             yield break;
         }
 

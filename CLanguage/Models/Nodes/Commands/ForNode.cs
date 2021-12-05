@@ -1,22 +1,24 @@
-﻿using CompiladorAPI.Interfaces;
+﻿using CLanguage.Models.Nodes.Commands.Terminal;
+using CompiladorAPI.Interfaces;
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace CLanguage.Models.Nodes
+namespace CLanguage.Models.Nodes.Commands
 {
-    public class WhileNode : Node
+    public class ForNode : Node
     {
-        public override NodeType Type => NodeType.WHILE;
-        private static readonly Regex firstComandoRegex = new Regex(@"^[w]*");
+        public override NodeType Type => NodeType.FOR;
 
-        public WhileNode()
+        private static readonly Regex firstComandoRegex = new Regex(@"^[f]*");
+
+        public ForNode()
         {
         }
 
-        public WhileNode(string value) : base(value)
+        public ForNode(string value) : base(value)
         {
         }
 
@@ -33,9 +35,13 @@ namespace CLanguage.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode>() {
-                new TerminalNode("while"),
+                new TerminalForNode(),
                 new TerminalNode("("),
+                new ExprAttrNode(),
+                new TerminalNode(";"),
                 new ExprBiNode(),
+                new TerminalNode(";"),
+                new ExprNode(),
                 new TerminalNode(")"),
             });
             yield break;

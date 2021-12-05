@@ -9,8 +9,6 @@ namespace CompiladorAPI.Interfaces
         public string GetValue();
         public List<INode> GetChildren();
         public bool Validate();
-        public IEnumerable<Condition> GetNeightbors();
-        public bool IsTerminal();
         public bool Build(char next);
         public bool First(char next);
         public bool Follow(string next);
@@ -21,5 +19,8 @@ namespace CompiladorAPI.Interfaces
         public INode TranslateNodeTo<TCode>() where TCode : ICode;
         public INode From(INode node);
         public string GetCleanValue();
+        public IEnumerable<Condition> GetNeightbors();
+        public bool IsTerminal();
+        public bool IsSimpleTranslation();
     }
 }

@@ -57,6 +57,10 @@ namespace CompiladorAPI.Models
         {
             foreach (INode child in node.GetChildren())
             {
+                if (!child.IsSimpleTranslation())
+                {
+                    yield return child;
+                }
                 foreach (INode item in TraversalLoop(child))
                 {
                     yield return item;

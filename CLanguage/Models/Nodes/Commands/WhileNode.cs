@@ -1,11 +1,12 @@
-﻿using CompiladorAPI.Interfaces;
+﻿using CLanguage.Models.Nodes.Commands.Terminal;
+using CompiladorAPI.Interfaces;
 using CompiladorAPI.Models;
 using CompiladorAPI.Models.Nodes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace DotLanguage.Models.Nodes
+namespace CLanguage.Models.Nodes.Commands
 {
     public class WhileNode : Node
     {
@@ -33,7 +34,17 @@ namespace DotLanguage.Models.Nodes
         public override IEnumerable<Condition> GetNeightbors()
         {
             yield return new Condition(new List<INode>() {
-                new TerminalNode("while"),
+                new TerminalDoNode(),
+                new TerminalNode("{"),
+                new BlocoNode(),
+                new TerminalNode("}"),
+                new TerminalWhileNode(),
+                new TerminalNode("("),
+                new ExprBiNode(),
+                new TerminalNode(")"),
+            });
+            yield return new Condition(new List<INode>() {
+                new TerminalWhileNode(),
                 new TerminalNode("("),
                 new ExprBiNode(),
                 new TerminalNode(")"),
