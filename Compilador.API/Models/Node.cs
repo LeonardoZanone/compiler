@@ -1,7 +1,10 @@
-﻿using CompiladorAPI.Interfaces;
+﻿using Compilador.API.Models;
+using CompiladorAPI.Interfaces;
+using jdk.nashorn.@internal.ir;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CompiladorAPI.Models.Nodes
 {
@@ -14,7 +17,7 @@ namespace CompiladorAPI.Models.Nodes
         private List<INode> Children { get; set; } = new List<INode>();
         private INode Parent { get; set; }
         private static readonly Dictionary<Type, ICode> Codes = new Dictionary<Type, ICode>();
-
+        private static readonly Regex whiteSpaces = new Regex(@"^\s");
         public Node()
         {
         }
@@ -39,10 +42,12 @@ namespace CompiladorAPI.Models.Nodes
             string backupValue = value;
             foreach (Condition condition in GetNeightbors())
             {
+                value = HandleWhitespaces(value);
                 value = backupValue;
                 Children = new List<INode>();
                 foreach (INode node in condition.Nodes)
                 {
+                    value = HandleWhitespaces(value);
                     if (string.IsNullOrEmpty(value))
                     {
                         callStack.RemoveAt(callStack.Count - 1);
@@ -71,6 +76,7 @@ namespace CompiladorAPI.Models.Nodes
                         callStack.RemoveAt(callStack.Count - 1);
                         break;
                     }
+
 
                     //if (!node.Follow(value))
                     //{
@@ -130,6 +136,17 @@ namespace CompiladorAPI.Models.Nodes
             }
 
             return "FAILED PATH";
+        }
+
+        private string HandleWhitespaces(string value)
+        {
+            while (whiteSpaces.IsMatch(value))
+            {
+                AddChild(new SpaceNode(value.First().ToString()));
+                value = value.Substring(1);
+            }
+
+            return value;
         }
 
         public abstract IEnumerable<Condition> GetNeightbors();
@@ -213,7 +230,8 @@ namespace CompiladorAPI.Models.Nodes
 
     public enum NodeType
     {
-        S = 0,
+        SPACE = 0,
+        S,
         BLOCO,
         EXPR,
         EXPRATT,

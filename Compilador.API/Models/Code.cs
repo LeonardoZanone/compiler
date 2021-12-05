@@ -39,6 +39,11 @@ namespace CompiladorAPI.Models
             {
                 foreach (INode node in Graph.Traversal())
                 {
+                    if(node.GetNodeType() == NodeType.SPACE)
+                    {
+                        code += node.ToString();
+                        continue;
+                    }
                     INode convertedNode = node.TranslateNodeTo<TCode>();
                     if (node.IsTerminal() || !convertedNode.IsSimpleTranslation())
                     {

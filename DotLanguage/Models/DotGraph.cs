@@ -17,8 +17,8 @@ namespace DotLanguage.Models
 
         public void Analyse(string content)
         {
-            Regex whitespaces = new Regex(@"\s");
-            content = whitespaces.Replace(content, new MatchEvaluator(match => ""));
+            //Regex whitespaces = new Regex(@"\s");
+            //content = whitespaces.Replace(content, new MatchEvaluator(match => ""));
             string result = Root.Validate(content, new List<NodeType>());
             if (result == null)
             {

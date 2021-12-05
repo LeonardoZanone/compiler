@@ -1,5 +1,6 @@
 ﻿using CompiladorAPI.Models;
 using DotLanguage.Models;
+using System;
 using System.IO;
 
 namespace Compilador.Services
@@ -8,9 +9,16 @@ namespace Compilador.Services
     {
         public static void Convert(string filePath, string outputPath)
         {
-            DotCode dotCode = new DotCode(Path.GetFileName(filePath), filePath, ReadCode(filePath));
-            string cCode = dotCode.TranslateTo<CCode>();
-            var a = 10;
+            try
+            {
+                DotCode dotCode = new DotCode(Path.GetFileName(filePath), filePath, ReadCode(filePath));
+                string cCode = dotCode.TranslateTo<CCode>();
+                using(StreamWriter sw = new StreamWriter(outputPath))
+                {
+                    sw.Write(cCode);
+                }
+            }
+            catch (Exception) { }
         }
         private static string ReadCode(string filePath)
         {
