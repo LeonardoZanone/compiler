@@ -23,6 +23,7 @@ namespace CompiladorAPI.Models
             if (string.IsNullOrEmpty(result))
             {
                 _isAnalysed = true;
+                Root.GetChildren().RemoveAll(n => n.IsTerminal());
             }
         }
 
